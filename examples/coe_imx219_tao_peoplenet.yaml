@@ -1,0 +1,57 @@
+%YAML 1.2
+---
+exposure:
+  tensor_name: camera
+  exposure: 1.0
+  red_gain: 1.05
+  green_gain: 0.95
+  blue_gain: 1.05
+
+preprocessor:
+  in_tensor_name: camera
+  out_tensor_name: preprocessed
+  out_dtype: "float32"
+  resize_width: 960
+  resize_height: 544
+  scale_min: 0.0
+  scale_max: 1.0
+
+inference:
+  backend: "trt"
+  pre_processor_map:
+    "face_detect": ["preprocessed"]
+  inference_map:
+    "face_detect": ["scores", "boxes"]
+  input_on_cuda: true
+  is_engine_path: false
+  enable_fp16: true
+
+postprocessor:
+  iou_threshold: 0.15
+  score_threshold: 0.5
+  box_scale: 35.0
+  box_offset: 0.5
+  grid_height: 34
+  grid_width: 60
+
+visualizer:
+  width: 1920
+  height: 1080
+  show_boxes: true
+  tensors:
+    - name: camera
+      type: color
+      opacity: 1.0
+      priority: 0
+    - name: faces
+      type: rectangles
+      opacity: 0.5
+      line_width: 4
+      color: [1.0, 0.0, 0.0, 1.0]
+      priority: 1
+    - name: person
+      type: rectangles
+      opacity: 0.5
+      line_width: 4
+      color: [0.0, 1.0, 0.0, 1.0]
+      priority: 1

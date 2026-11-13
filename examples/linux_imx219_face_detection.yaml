@@ -1,0 +1,77 @@
+%YAML 1.2
+---
+exposure:
+  exposure: 0.85
+  red_gain: 1.05
+  green_gain: 0.85
+  blue_gain: 1.05
+
+letterbox:
+  width: 640
+  height: 640
+
+normalize:
+  mean: 127.5
+  std: 128.0
+
+inference:
+  backend: trt
+  input_on_cuda: true
+  is_engine_path: false
+  enable_fp16: true
+
+postprocessor:
+  model_width: 640
+  model_height: 640
+  image_width: 1920
+  image_height: 1080
+  letterbox_scale: 0.3333333333333333
+  score_threshold: 0.5
+  nms_threshold: 0.4
+  max_detections: 100
+
+# Host-side mapping from normalized face_center error to APB PWM widths.
+# pulse units are clk_100m cycles (10 ns).
+# Pan and tilt: full 0.5..2.5 ms range confirmed safe for both servos.
+servo:
+  enable_pan: true
+  enable_tilt: true
+  center_pulse: 150000
+  tilt_center_pulse: 90000
+  min_pulse: 50000
+  max_pulse: 250000
+  tilt_min_pulse: 50000
+  tilt_max_pulse: 150000
+  period_cycles: 2000000
+  # Servo control is fixed-rate, so behavior does not depend on inference FPS.
+  control_hz: 15.0
+  # EMA retention for measured face velocity; higher = smoother/noisier response.
+  velocity_filter_alpha: 0.95
+  # Adaptive multiplier for proportional + velocity corrections. It rises
+  # smoothly from command_amplifier at deadband to max_error_amplifier at
+  # an image edge, then remains limited by each axis' max_step.
+  command_amplifier: 0.9
+  max_error_amplifier: 5.0
+  # Each step is proportional position correction plus velocity feed-forward.
+  # Velocity gains make sudden face motion receive a larger correction.
+  pan_step_gain: 4000.0
+  pan_velocity_gain: 1500.0
+  pan_min_step: 10
+  pan_max_step: 8000
+  tilt_step_gain: 4000.0
+  tilt_velocity_gain: 1500.0
+  tilt_min_step: 10
+  tilt_max_step: 10000
+  deadband: 0.04
+  invert_pan: true
+  invert_tilt: true
+  write_period: true
+
+visualizer:
+  width: 1920
+  height: 1080
+  # When false, hide face boxes but keep SCRFD + servo running.
+  show_boxes: true
+  # RGBA 0..1; drawn as an overlay image (HSDK5 GeometryLayer has no color).
+  box_color: [0.0, 1.0, 0.0, 1.0]
+  box_line_width: 3

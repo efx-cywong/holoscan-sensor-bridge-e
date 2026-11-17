@@ -15,6 +15,7 @@
 ../../../../nv_hsb_ip/ptp/ptp_pkg.sv
 ../../../../nv_hsb_ip/reg_map/regmap_pkg.sv
 ../../../../nv_hsb_ip/rx_parser/rx_parser_pkg.sv
+../../../../nv_hsb_ip/packetizer/packetizer_pkg.sv
 
 // bootp
 ../../../../nv_hsb_ip/bootp/bootp.sv
@@ -63,6 +64,7 @@
 ../../../../nv_hsb_ip/lib_axis/axis_arb.sv
 ../../../../nv_hsb_ip/lib_axis/axis_buffer.sv
 ../../../../nv_hsb_ip/lib_axis/axis_checker.sv
+../../../../nv_hsb_ip/lib_axis/axis_demux.sv
 ../../../../nv_hsb_ip/lib_axis/axis_drop.sv
 ../../../../nv_hsb_ip/lib_axis/axis_drop_tail.sv
 ../../../../nv_hsb_ip/lib_axis/axis_ftr.sv
@@ -103,6 +105,7 @@
 // packetizer
 ../../../../nv_hsb_ip/packetizer/odd_even_gen.sv
 ../../../../nv_hsb_ip/packetizer/packetizer.sv
+../../../../nv_hsb_ip/packetizer/packetizer_static.sv
 ../../../../nv_hsb_ip/packetizer/packetizer_top.sv
 ../../../../nv_hsb_ip/packetizer/virtual_port.sv
 
